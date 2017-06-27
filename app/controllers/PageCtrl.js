@@ -3,6 +3,7 @@ const _ = require('underscore');
 class PageCtrl {
     constructor(loginService) {
         this._loginService = loginService;
+
     }
 
     login(req, res) {
@@ -10,9 +11,12 @@ class PageCtrl {
     }
 
     postLogin(req, res) {
-        if(_.isEmpty(req.body.login)) {
+        if(_.isEmpty(req.body)||
+            _.isEmpty(req.body.login)
+
+        ) {
             res.render('index/index', {
-                message: 'Merci de saisir votre code d\'accès personnel.'
+                message: 'Merci de saisir votre login.'
             });
             return;
         }
