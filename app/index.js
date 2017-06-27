@@ -1,15 +1,15 @@
 const path = require('path');
 const express = require('express');
-const IndexCtrl = require('./controllers/IndexCtrl');
+const PageCtrl = require('./controllers/PageCtrl');
 
 const app = express();
 
-const indexCtrl = new IndexCtrl();
+const pageCtrl = new PageCtrl();
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, '/../views'));
 
-app.get('/', indexCtrl.register.bind(indexCtrl));
+app.get('/', pageCtrl.register.bind(pageCtrl));
 
 app.listen(3000, () => {
     console.log("Started on 3000.")
