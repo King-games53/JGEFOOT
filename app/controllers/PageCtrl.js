@@ -3,6 +3,7 @@ const _ = require('underscore');
 class PageCtrl {
     constructor(loginService) {
         this._loginService = loginService;
+
     }
 
     login(req, res) {
@@ -10,8 +11,16 @@ class PageCtrl {
     }
 
     postLogin(req, res) {
+<<<<<<< HEAD
         if(_.isEmpty(req.body.login)) {
             res.render('page/login', {
+=======
+        if(_.isEmpty(req.body)||
+            _.isEmpty(req.body.login)
+
+        ) {
+            res.render('index/index', {
+>>>>>>> c1ec35a84c00a2f3045e487ed9d2bcf7b800c5e2
                 message: 'Merci de saisir votre login.'
             });
             return;
