@@ -23,17 +23,20 @@ class PageCtrl {
 
         this._loginService.login(req.body.login).then(
             result => {
-                let message = 'Vous êtes connecté.';
 
+                let message = 'Vous êtes connecté.';
+                if (result === 'Identifiant n\'existe pas') {
+                    message = 'Identifiant n\'existe pas'
+                }
                 res.render('index/index', {
                     message: message
                 });
             }
-        ).catch(e => {
+        ).catch(e =>{console.log(e)
             res.render('index/index', {
                 message: 'Erreur système'
-            });
-        });
+            })});
+
 
     }
 }

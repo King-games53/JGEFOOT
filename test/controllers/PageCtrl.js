@@ -71,20 +71,28 @@ const PageCtrl = require('../../app/controllers/PageCtrl');
     describe("PageCtrl",()=> {
         describe('#constructor', () => {
             it("Vérification que le controleur peut récupérer un objet membre envoyé par le login service", () => {
-                const pageCtrl = new PageCtrl({
-                    member_id: 7,
-                    login: 7,
-                    name: 'tata'
-                })
+                const pageCtrl = new PageCtrl(true);
+
+           expect(pageCtrl._loginService).toBe(true);
             })
         });
 
         describe("#postLogin",()=>{
         it("Je m'attends à recevoir un login qui correspond à un membre et j'affiche le message 'Vous êtes connecté.'", () => {
-            const loginMemberCtrl = new PageCtrl();
+            const loginService={
+                login: (login) => {
+                    expect(login).toBe('7');
+                    return new Promise(resolve => {
+                        resolve('success');
+                    });
+                }
+            };
+
+            const loginMemberCtrl = new PageCtrl(loginService);
+
             const req = {
                 body: {
-                    login: 7
+                    login:'7'
                 }
 
             };
@@ -96,6 +104,35 @@ const PageCtrl = require('../../app/controllers/PageCtrl');
             };
             loginMemberCtrl.postLogin(req, res)
         });
+        });
+
+        describe("#postLogin",()=>{
+            it("Je m'attends à recevoir un login qui ne correspond pas à un membre et j'affiche le message 'Identifiant n'existe pas.'", () => {
+                const loginService={
+                    login: (login) => {
+                        return new Promise((resolve,reject) => {
+                            resolve('Identifiant n\'existe pas');
+                        });
+                    }
+                };
+
+                const loginCheckCtrl = new PageCtrl(loginService);
+
+                const req = {
+                    body: {
+                        login:'8'
+                    }
+
+                };
+                const res = {
+                    render: (view, data) => {
+                        expect(view).toBe('index/index');
+                        expect(data.message).toBe('Identifiant n\'existe pas');
+
+                    }
+                };
+                loginCheckCtrl.postLogin(req, res)
+            });
         });
     });
 
